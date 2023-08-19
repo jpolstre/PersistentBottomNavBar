@@ -1,15 +1,14 @@
+import "package:example_bottom/custom-widget-tabs.widget.dart";
+import "package:example_bottom/screens.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
-import "package:persistent_bottom_nav_bar_example_project/custom-widget-tabs.widget.dart";
-import "package:persistent_bottom_nav_bar_example_project/screens.dart";
-
 void main() => runApp(const MyApp());
 
-BuildContext testContext;
+late BuildContext testContext;
 
 class MyApp extends StatelessWidget {
-  const MyApp({final Key key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(final BuildContext context) => MaterialApp(
@@ -29,10 +28,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({final Key key}) : super(key: key);
+  const MainMenu({super.key});
 
   @override
-  _MainMenuState createState() => _MainMenuState();
+  State<MainMenu> createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> {
@@ -75,17 +74,16 @@ class _MainMenuState extends State<MainMenu> {
 // ----------------------------------------- Provided Style ----------------------------------------- //
 
 class ProvidedStylesExample extends StatefulWidget {
-  const ProvidedStylesExample({final Key key, this.menuScreenContext})
-      : super(key: key);
+  const ProvidedStylesExample({super.key, required this.menuScreenContext});
   final BuildContext menuScreenContext;
 
   @override
-  _ProvidedStylesExampleState createState() => _ProvidedStylesExampleState();
+  State<ProvidedStylesExample> createState() => _ProvidedStylesExampleState();
 }
 
 class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
+  late PersistentTabController _controller;
+  late bool _hideNavBar;
 
   @override
   void initState() {
@@ -206,11 +204,11 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   @override
   Widget build(final BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text("Navigation Bar Demo")),
-        drawer: Drawer(
+        drawer: const Drawer(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Text("This is the Drawer"),
               ],
             ),
@@ -218,38 +216,43 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
         body: PersistentTabView(
           context,
+
           controller: _controller,
           screens: _buildScreens(),
+
           items: _navBarsItems(),
           resizeToAvoidBottomInset: true,
           navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
               ? 0.0
               : kBottomNavigationBarHeight,
-          bottomScreenMargin: 0,
-          onWillPop: (final context) async {
-            await showDialog(
-              context: context,
-              useSafeArea: true,
-              builder: (final context) => Container(
-                height: 50,
-                width: 50,
-                color: Colors.white,
-                child: ElevatedButton(
-                  child: const Text("Close"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            );
-            return false;
-          },
+          bottomScreenMargin: 20,
+          onWillPop: null, //(context) async {
+          // await showDialog(
+          //   context: context!,
+          //   useSafeArea: true,
+          //   builder: (final context) => Container(
+          //     height: 50,
+          //     width: 50,
+          //     color: Colors.white,
+          //     child: ElevatedButton(
+          //       child: const Text("Close"),
+          //       onPressed: () {
+          //         Navigator.pop(context);
+          //       },
+          //     ),
+          //   ),
+          // );
+          //   return true;
+          // },
           selectedTabScreenContext: (final context) {
-            testContext = context;
+            if (context != null) {
+              testContext = context;
+            }
           },
           backgroundColor: Colors.black,
           hideNavigationBar: _hideNavBar,
-          decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
+          decoration: const NavBarDecoration(
+              colorBehindNavBar: Color.fromARGB(255, 216, 89, 9)),
           itemAnimationProperties: const ItemAnimationProperties(
             duration: Duration(milliseconds: 400),
             curve: Curves.ease,
@@ -268,10 +271,10 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 class CustomNavBarWidget extends StatelessWidget {
   const CustomNavBarWidget(
     this.items, {
-    final Key key,
-    this.selectedIndex,
-    this.onItemSelected,
-  }) : super(key: key);
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
   final int selectedIndex;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
@@ -296,12 +299,12 @@ class CustomNavBarWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.only(top: 1),
               child: Material(
                 type: MaterialType.transparency,
                 child: FittedBox(
                     child: Text(
-                  item.title,
+                  item.title!,
                   style: TextStyle(
                       color: isSelected
                           ? (item.activeColorSecondary ??
@@ -321,20 +324,30 @@ class CustomNavBarWidget extends StatelessWidget {
         color: Colors.white,
         child: SizedBox(
           width: double.infinity,
-          height: kBottomNavigationBarHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items.map((final item) {
-              final int index = items.indexOf(item);
-              return Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    onItemSelected(index);
-                  },
-                  child: _buildItem(item, selectedIndex == index),
+          height: 120.00, //kBottomNavigationBarHeight + 20,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.black,
+                child: SizedBox.fromSize(
+                  size: const Size.fromHeight(50),
                 ),
-              );
-            }).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: items.map((final item) {
+                  final int index = items.indexOf(item);
+                  return Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        onItemSelected(index);
+                      },
+                      child: _buildItem(item, selectedIndex == index),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ),
       );

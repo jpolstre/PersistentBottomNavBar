@@ -1,15 +1,13 @@
+import "package:example_bottom/modal_screen.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
-import "package:persistent_bottom_nav_bar_example_project/modal_screen.dart";
-
 class MainScreen extends StatelessWidget {
   const MainScreen(
-      {final Key key,
-      this.menuScreenContext,
-      this.onScreenHideButtonPressed,
-      this.hideStatus = false})
-      : super(key: key);
+      {super.key,
+      required this.menuScreenContext,
+      required this.onScreenHideButtonPressed,
+      this.hideStatus = false});
   final BuildContext menuScreenContext;
   final VoidCallback onScreenHideButtonPressed;
   final bool hideStatus;
@@ -144,7 +142,7 @@ class MainScreen extends StatelessWidget {
 }
 
 class MainScreen2 extends StatelessWidget {
-  const MainScreen2({final Key key}) : super(key: key);
+  const MainScreen2({super.key});
 
   @override
   Widget build(final BuildContext context) => Scaffold(
@@ -179,7 +177,7 @@ class MainScreen2 extends StatelessWidget {
 }
 
 class MainScreen3 extends StatelessWidget {
-  const MainScreen3({final Key key}) : super(key: key);
+  const MainScreen3({super.key});
 
   @override
   Widget build(final BuildContext context) => Scaffold(

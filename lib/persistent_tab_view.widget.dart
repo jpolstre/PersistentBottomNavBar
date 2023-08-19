@@ -100,6 +100,7 @@ class PersistentTabView extends PersistentTabViewBase {
     this.onWillPop,
     this.stateManagement = true,
     this.handleAndroidBackButtonPress = true,
+    final double navBarHeight = kBottomNavigationBarHeight,
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
   })  : assert(itemCount == screens.length,
@@ -111,6 +112,7 @@ class PersistentTabView extends PersistentTabViewBase {
           context: context,
           screens: screens,
           controller: controller,
+          navBarHeight: navBarHeight,
           margin: margin,
           routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
@@ -479,9 +481,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                         min(
                             widget.navBarHeight!,
                             max(
-                                    widget.decoration!.borderRadius!.topRight.y,
-                                    widget
-                                        .decoration!.borderRadius!.topLeft.y) +
+                                    widget.decoration?.borderRadius?.topRight
+                                            .y ??
+                                        0.0,
+                                    widget.decoration?.borderRadius?.topLeft
+                                            .y ??
+                                        0.0) +
                                 (widget.decoration?.border != null
                                     ? widget
                                         .decoration!.border!.dimensions.vertical

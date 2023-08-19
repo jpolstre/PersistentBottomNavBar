@@ -1,22 +1,27 @@
-name: persistent_bottom_nav_bar_example_project
-description: An example project for persistent_bottom_nav_bar
+name: example_bottom
+description: A new Flutter project.
 
-version: 1.0.0
+publish_to: "none"
+
+version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=3.1.0-262.3.beta <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  
+  cupertino_icons: ^1.0.2
+  # persistent_bottom_nav_bar: ^5.0.2
   persistent_bottom_nav_bar:
     path: ../
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
 flutter:
   uses-material-design: true
-
